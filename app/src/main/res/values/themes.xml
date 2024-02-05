@@ -1,0 +1,19 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.ListaDeTarefas" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/primaryVariant</item>
+
+
+        <item name="colorSecondary">@color/secundary</item>
+        <item name="colorSecondaryVariant">@color/secundaryVariant</item>
+        <item name="android:windowBackground">@color/fundo</item>
+
+
+    </style>
+
+    <style name="Theme.ListaDeTarefas" parent="Base.Theme.ListaDeTarefas" />
+</resources>
