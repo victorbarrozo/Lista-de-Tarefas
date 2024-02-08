@@ -13,52 +13,83 @@ class TarefaDAO(context: Context):ITarefaDAO {
     override fun salvar(tarefa: Tarefa): Boolean {
         try{
             val conteudos = ContentValues()
-            conteudos.put("${DatabaseHelper.DESCRICAO}", tarefa.descricao)
+            conteudos.put("${DatabaseHelper.COLUNA_DESCRICAO}", tarefa.descricao)
             escrever.insert(
                 DatabaseHelper.NOME_TABELA_TAREFAS,
                 null,
                 conteudos
             )
-            Log.i("info.db,","Sucesso ao Salvar tarefa")
+            Log.i("info.db","Sucesso ao Salvar tarefa")
         }catch (e: Exception){
-            Log.i("info.db,","Erro ao Salvar tarefa")
+            Log.i("info.db","Erro ao Salvar tarefa")
             return false
         }
              return true
     }
 
     override fun atualizar(tarefa: Tarefa): Boolean {
-        TODO("Not yet implemented")
+        val args = arrayOf (tarefa.idTarefa.toString() )
+        val conteudos = ContentValues()
+        conteudos.put("${DatabaseHelper.COLUNA_DESCRICAO}", tarefa.descricao)
+
+        try{
+            escrever.update(
+                DatabaseHelper.NOME_TABELA_TAREFAS,
+                conteudos,
+                "${DatabaseHelper.COLUNA_ID_TAREFA} = ?",
+                args
+            )
+            Log.i("info_db","Sucesso ao atrualizar tarefa")
+        }catch (e: Exception){
+            e.printStackTrace()
+            Log.i("info_db","Erro ao atualizar tarefa")
+            return false
+        }
+        return true
     }
 
     override fun remover(idTarefa: Int): Boolean {
-        TODO("Not yet implemented")
+
+        val args = arrayOf (idTarefa.toString() )
+        try{
+            escrever.delete(
+                DatabaseHelper.NOME_TABELA_TAREFAS,
+                "${DatabaseHelper.COLUNA_ID_TAREFA} = ?",
+                args
+            )
+            Log.i("info_db","Sucesso ao remover tarefa")
+        }catch (e: Exception){
+            e.printStackTrace()
+            Log.i("info_db","Erro ao remover tarefa")
+            return false
+        }
+        return true
     }
 
     override fun listar(): List<Tarefa> {
+
     val listaTarefas = mutableListOf<Tarefa>()
 
-        val sql = "SELECT ${DatabaseHelper.ID_TAREFA}, ${DatabaseHelper.DESCRICAO}, " +
-                  "strftime('%d/%m/%Y %H:%Mh',${DatabaseHelper.DATA_CADASTRO})" +
-                  "${DatabaseHelper.DATA_CADASTRO}" +
-                  " FROM ${DatabaseHelper.NOME_TABELA_TAREFAS}"
+        val sql = "SELECT ${DatabaseHelper.COLUNA_ID_TAREFA}, " +
+                  "${DatabaseHelper.COLUNA_DESCRICAO}, " +
+                  "strftime('%d/%m/%Y %H:%Mh',${DatabaseHelper.COLUNA_DATA_CADASTRO})" +
+                  "${DatabaseHelper.COLUNA_DATA_CADASTRO} " +
+                  "FROM ${DatabaseHelper.NOME_TABELA_TAREFAS}"
 
         val cursor = ler.rawQuery(sql, null)
 
-        val indiceId = cursor.getColumnIndex(DatabaseHelper.ID_TAREFA)
-        val indiceDescricao = cursor.getColumnIndex(DatabaseHelper.DESCRICAO)
-        val indiceData = cursor.getColumnIndex(DatabaseHelper.DATA_CADASTRO)
+        val indiceId = cursor.getColumnIndex(DatabaseHelper.COLUNA_ID_TAREFA)
+        val indiceDescricao = cursor.getColumnIndex(DatabaseHelper.COLUNA_DESCRICAO)
+        val indiceData = cursor.getColumnIndex(DatabaseHelper.COLUNA_DATA_CADASTRO)
 
-
-
-        while (cursor.moveToNext()){
-            val idTarefa = cursor.getInt(indiceId)
-            val idDescricao = cursor.getString(indiceDescricao)
-            val idData = cursor.getString(indiceData)
+        while (cursor.moveToNext() ){
+            val idTarefa = cursor.getInt( indiceId )
+            val descricao = cursor.getString( indiceDescricao )
+            val dataCadastro = cursor.getString( indiceData )
 
 
             listaTarefas.add(
-                Tarefa(idTarefa, idDescricao, idData)
+                Tarefa(idTarefa, descricao, dataCadastro)
             )
         }
 

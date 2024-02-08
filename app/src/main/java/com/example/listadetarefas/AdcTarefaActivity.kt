@@ -12,31 +12,68 @@ class AdcTarefaActivity : AppCompatActivity() {
     private val binding by lazy {
         ActivityAdcTarefaBinding.inflate(layoutInflater)
     }
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(binding.root)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(binding.root)
+            var tarefa: Tarefa? = null
+            val bundle = intent.extras
+            if (bundle != null) {
+                tarefa = bundle.getSerializable("tarefa") as Tarefa
+                binding.editTarefas.setText(tarefa.descricao)
+            }
 
-        binding.btnSalvar.setOnClickListener {
-            if(binding.editTarefas.text.isNotEmpty()){
-                val descricao = binding.editTarefas.text.toString()
-                val tarefa = Tarefa(
-                    -1, descricao, "defaut"
-                    )
-                val tarefaDAO = TarefaDAO(this)
-                if(tarefaDAO.salvar(tarefa)){
-                    Toast.makeText(this,"Tarefa cadastrada com sucesso!", Toast.LENGTH_SHORT).show()
-                    finish()
+            binding.btnSalvar.setOnClickListener {
+                if (binding.editTarefas.text.isNotEmpty()) {
+                   if (tarefa!= null){
+                       editar(tarefa)
+                   }else{
+                       salvar()
+                   }
                 }
 
-            }else{
-                Toast.makeText(this, "Preencha uma tarefa!", Toast.LENGTH_SHORT).show()
+                /* }else{
+                Toast.makeText(this,
+                    "Preencha uma tarefa!",
+                    Toast.LENGTH_SHORT).show()
+            }*/
             }
+        }
+
+    private fun editar(tarefa: Tarefa) {
+
+        val descricao = binding.editTarefas.text.toString()
+        val tarefaAtializar = Tarefa (
+            tarefa.idTarefa, descricao, "default"
+        )
+        val tarefaDAO = TarefaDAO(this)
+        tarefaDAO.atualizar(tarefaAtializar)
+        if (tarefaDAO.atualizar(tarefaAtializar)){
+            Toast.makeText(
+                this,
+                "Tarefa atualizada com sucesso!",
+                Toast.LENGTH_SHORT
+            ).show()
+            finish()
         }
 
     }
 
     private fun salvar() {
-        TODO("Not yet implemented")
+
+        val descricao = binding.editTarefas.text.toString()
+        val tarefa = Tarefa(
+            -1, descricao, "defaut"
+        )
+        val tarefaDAO = TarefaDAO(this)
+        if (tarefaDAO.salvar(tarefa)) {
+            Toast.makeText(
+                this,
+                "Tarefa cadastrada com sucesso!",
+                Toast.LENGTH_SHORT
+            ).show()
+            finish()
+        }
     }
+
 }
