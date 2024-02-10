@@ -7,11 +7,11 @@ import com.example.listadetarefas.database.TarefaDAO
 import com.example.listadetarefas.databinding.ActivityAdcTarefaBinding
 import com.example.listadetarefas.databinding.ActivityMainBinding
 import com.example.listadetarefas.model.Tarefa
-
 class AdcTarefaActivity : AppCompatActivity() {
     private val binding by lazy {
         ActivityAdcTarefaBinding.inflate(layoutInflater)
     }
+
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             setContentView(binding.root)
@@ -46,6 +46,7 @@ class AdcTarefaActivity : AppCompatActivity() {
         val tarefaAtializar = Tarefa (
             tarefa.idTarefa, descricao, "default"
         )
+
         val tarefaDAO = TarefaDAO(this)
         tarefaDAO.atualizar(tarefaAtializar)
         if (tarefaDAO.atualizar(tarefaAtializar)){
@@ -77,3 +78,4 @@ class AdcTarefaActivity : AppCompatActivity() {
     }
 
 }
+

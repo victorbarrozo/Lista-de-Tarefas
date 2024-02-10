@@ -13,12 +13,12 @@ import com.example.listadetarefas.database.TarefaDAO
 import com.example.listadetarefas.databinding.ActivityMainBinding
 import com.example.listadetarefas.model.Tarefa
 
-class   MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
     private val binding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
     private var listaTarefas = emptyList<Tarefa>()
-   private var tarefaAdapter: TarefaAdapter? = null
+    private var tarefaAdapter: TarefaAdapter? = null
 
     private fun confirmarExclusao(id: Int) {
 
@@ -43,8 +43,7 @@ class   MainActivity : AppCompatActivity() {
                 ).show()
             }
         }
-        alertBuilder.setNegativeButton("Não"){
-                _,_->
+        alertBuilder.setNegativeButton("Não") { _, _ ->
         }
         alertBuilder.create().show()
 
@@ -54,15 +53,15 @@ class   MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val intent = Intent(this,AdcTarefaActivity::class.java)
+        val intent = Intent(this, AdcTarefaActivity::class.java)
         binding.fabAdc.setOnClickListener {
             startActivity(intent)
         }
 
         //RecyclerView
         tarefaAdapter = TarefaAdapter(
-            {id -> confirmarExclusao(id) },
-            {tarefa -> editar(tarefa) }
+            { id -> confirmarExclusao(id) },
+            { tarefa -> editar(tarefa) }
         )
         binding.rvTarefas.adapter = tarefaAdapter
 
@@ -73,13 +72,13 @@ class   MainActivity : AppCompatActivity() {
     private fun editar(tarefa: Tarefa) {
         val intent = Intent(this, AdcTarefaActivity::class.java)
         intent.putExtra("tarefa", tarefa)
-        startActivity( intent )
+        startActivity(intent)
 
     }
 
-    private fun atualizarListaTarefas(){
-        val tarefa = TarefaDAO(this)
-        listaTarefas = tarefa.listar()
+    private fun atualizarListaTarefas() {
+        val tarefaDAO = TarefaDAO(this)
+        listaTarefas = tarefaDAO.listar()
         tarefaAdapter?.adicionarLista(listaTarefas)
 
         /*listaTarefas.forEach {tarefa ->
@@ -90,7 +89,7 @@ class   MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-       atualizarListaTarefas()
+        atualizarListaTarefas()
 
     }
 }

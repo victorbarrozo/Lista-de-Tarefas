@@ -5,10 +5,10 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 
-class DatabaseHelper(context: Context):SQLiteOpenHelper(
-    context, BANCO_DADOS, null, VERSAO)
-{
-    companion object{
+class DatabaseHelper(context: Context) : SQLiteOpenHelper(
+    context, BANCO_DADOS, null, VERSAO
+) {
+    companion object {
         const val BANCO_DADOS = "ListaTarefas.db"
         const val VERSAO = 1
         const val NOME_TABELA_TAREFAS = "Tarefas"
@@ -25,12 +25,12 @@ class DatabaseHelper(context: Context):SQLiteOpenHelper(
                 "  $COLUNA_DESCRICAO varchar (70)," +
                 "  $COLUNA_DATA_CADASTRO DATETIME NOT null DEFAULT CURRENT_TIMESTAMP" +
                 "  );"
-        try{
+        try {
             db?.execSQL(sql)
-            Log.i("info.db,","Sucesso ao criar tabela")
-    }catch (e: Exception){
+            Log.i("info.db,", "Sucesso ao criar tabela")
+        } catch (e: Exception) {
             e.printStackTrace()
-            Log.i("info.db,","Erro ao criar tabela")
+            Log.i("info.db,", "Erro ao criar tabela")
         }
     }
 

@@ -11,15 +11,16 @@ class TarefaAdapter(
     val onClickExcluir: (Int) -> Unit,
     val onClickEditar: (Tarefa) -> Unit
 
-): RecyclerView.Adapter<TarefaAdapter.TarefaViewHolder>(){
+) : RecyclerView.Adapter<TarefaAdapter.TarefaViewHolder>() {
 
-    private var listaTarefa : List<Tarefa> = emptyList()
-    fun adicionarLista(lista: List<Tarefa> ){
+    private var listaTarefa: List<Tarefa> = emptyList()
+    fun adicionarLista(lista: List<Tarefa>) {
         this.listaTarefa = lista
+        notifyDataSetChanged()
     }
 
-    inner class TarefaViewHolder(itemBinding: ItemTarefaBinding):
-    RecyclerView.ViewHolder(itemBinding.root) {
+    inner class TarefaViewHolder(itemBinding: ItemTarefaBinding) :
+        RecyclerView.ViewHolder(itemBinding.root) {
 
         private val binding: ItemTarefaBinding
 
@@ -27,7 +28,7 @@ class TarefaAdapter(
             binding = itemBinding
         }
 
-        fun bind(tarefa: Tarefa){
+        fun bind(tarefa: Tarefa) {
             binding.textTarefa.text = tarefa.descricao
             binding.textData.text = tarefa.dataCadastro
 
@@ -41,12 +42,11 @@ class TarefaAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TarefaViewHolder {
-       val itemTarefaBinding =  ItemTarefaBinding.inflate(
-           LayoutInflater.from(parent.context), parent,false
-       )
+        val itemTarefaBinding = ItemTarefaBinding.inflate(
+            LayoutInflater.from(parent.context), parent, false
+        )
         return TarefaViewHolder(itemTarefaBinding)
     }
-
 
 
     override fun onBindViewHolder(holder: TarefaViewHolder, position: Int) {
